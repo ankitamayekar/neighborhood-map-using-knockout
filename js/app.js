@@ -43,6 +43,7 @@ var locationView =  function(CurrentLocation) {
 			var resultInfo = information.response.venues[0];
 			self.add1 = resultInfo.location.formattedAddress[0];
 			self.add2 = resultInfo.location.formattedAddress[1];
+			
 			//add a marker for currently selected restuarant
 			this.marker = new google.maps.Marker({
 				position: new google.maps.LatLng(self.lat , self.lng),
@@ -65,12 +66,20 @@ var locationView =  function(CurrentLocation) {
 				
 			});
 		
-		}).fail(function() {
+		 }).fail(function() {
 			alert("FourSquare Error.");
-		}); 
+		});
 		this.openinfowindow = function(place) {
-				google.maps.event.trigger(this.marker, 'click');
-			};
+			
+			self.contentString ='<div><div><b>'+CurrentLocation.title+'</b></div><div>'+self.add1 +'</div><div>'+self.add2 +'</div><hr><div>'+CurrentLocation.desc +'</div></div>';
+			//alert(self.contentString);
+			self.infowindow = new google.maps.InfoWindow({
+					content: self.contentString,
+					maxWidth: 200
+				}); 
+			self.infowindow.open(map, this);
+				//google.maps.event.trigger(self.marker, 'click');
+		};
 };
 
 function AppViewModel(){
