@@ -43,13 +43,15 @@ var locationView =  function(CurrentLocation) {
 			var resultInfo = information.response.venues[0];
 			self.add1 = resultInfo.location.formattedAddress[0];
 			self.add2 = resultInfo.location.formattedAddress[1];
-			
-			//add a marker for currently selected restuarant
+		
+		 }).fail(function() {
+			alert("FourSquare Error.");
+		});
+		this.openinfowindow = function(place) {
 			this.marker = new google.maps.Marker({
 				position: new google.maps.LatLng(self.lat , self.lng),
-				//position:CurrentLocation.location,
 				map:map,
-				//animation: google.maps.Animation.DROP,
+				animation: google.maps.Animation.DROP,
 				title:CurrentLocation.title	
 			});
 			
@@ -63,21 +65,12 @@ var locationView =  function(CurrentLocation) {
 					maxWidth: 200
 				}); 
 				self.infowindow.open(map, this);
+				self.marker.setAnimation(google.maps.Animation.BOUNCE);
+				setTimeout(function() {
+					self.marker.setAnimation(null);
+				}, 3000);
 				
 			});
-		
-		 }).fail(function() {
-			alert("FourSquare Error.");
-		});
-		this.openinfowindow = function(place) {
-			
-			self.contentString ='<div><div><b>'+CurrentLocation.title+'</b></div><div>'+self.add1 +'</div><div>'+self.add2 +'</div><hr><div>'+CurrentLocation.desc +'</div></div>';
-			//alert(self.contentString);
-			self.infowindow = new google.maps.InfoWindow({
-					content: self.contentString,
-					maxWidth: 200
-				}); 
-			self.infowindow.open(map, this);
 				//google.maps.event.trigger(self.marker, 'click');
 		};
 };
